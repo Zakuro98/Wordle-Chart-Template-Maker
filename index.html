@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta charset="utf-8">
+        <meta name="keywords" content="word, wordle, chart, wordle chart, template, maker, second guess">
+        <meta name="description" content="makes charts for your second guess you can fill out as you play!">
+        <title>Wordle Chart Template Maker</title>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400">
+        <link id="main_css" rel="stylesheet" type="text/css" href="style.css">
+    </head>
+    <body>
+        <main>
+            <div>
+                <label>
+                    Select your starting guess:
+                </label>
+                <input id="word" value="adieu" minlength="5" maxlength="5">
+            </div>
+
+            <div>
+                <label>
+                    Number of columns to create:
+                </label>
+                <input id="columns" type="number" value="4" min="1">
+            </div>
+
+            <button id="create" onclick="initialize_chart()">
+                Create Chart
+            </button>
+
+            <p id="output"></p>
+        </main>
+
+        <script src="dictionary.js" charset="utf-8" type="text/javascript"></script>
+        <script src="main.js" charset="utf-8" type="text/javascript"></script>
+    </body>
+</html>

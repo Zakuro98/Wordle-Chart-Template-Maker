@@ -1,0 +1,25 @@
+main {
+    font-family: "Fira Code";
+    font-size: 16px;
+    font-weight: 400;
+    margin: 2em;
+    overflow: auto;
+    white-space: nowrap;
+}
+
+input {
+    font-family: "Fira Code";
+    font-size: 14px;
+    font-weight: 400;
+    width: 3em;
+}
+
+button {
+    font-family: "Fira Code";
+    font-size: 14px;
+    font-weight: 400;
+}
+
+div {
+    margin-bottom: 0.67em;
+}
