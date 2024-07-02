@@ -3,6 +3,15 @@ let columns = 4
 let guesses = true
 let sizes = false
 let percents = false
+let sort = false
+
+document.getElementById("sizes").addEventListener("click", function () {
+    if (document.getElementById("sizes").checked) {
+        document.getElementById("sub").style.display = "block"
+    } else {
+        document.getElementById("sub").style.display = "none"
+    }
+})
 
 function format_size(num) {
     if (num < 10) {
@@ -35,6 +44,7 @@ function initialize_chart() {
     guesses = document.getElementById("guesses").checked
     sizes = document.getElementById("sizes").checked
     if (sizes) percents = document.getElementById("percents").checked
+    if (sizes) sort = document.getElementById("sort").checked
 
     if (word.length === 5) {
         if (/^[a-zA-Z]+$/.test(word)) {
@@ -58,6 +68,12 @@ function initialize_chart() {
 function submit_chart() {
     const symbol = ["⬛", "🟨", "🟩"]
     let output = "Your template second guess chart:<br><br>"
+    if (sizes) {
+        output = "Your second guess group size chart:<br><br>"
+        if (sort)
+            output =
+                "Your second guess group size chart, sorted by size:<br><br>"
+    }
     let results = []
     for (let i = 0; i < 242; i++) {
         let tiles = [
@@ -246,7 +262,7 @@ function submit_chart() {
     }
     for (const w of dictionary) {
         if (w === word) {
-            if (sizes) {
+            if (sizes && !guesses) {
                 if (percents) results.push("🟩🟩🟩🟩🟩 " + format_percent(1))
                 else results.push("🟩🟩🟩🟩🟩 1&nbsp;&nbsp;&nbsp;&nbsp;")
             } else {
@@ -254,6 +270,15 @@ function submit_chart() {
                 else results.push("🟩🟩🟩🟩🟩 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;")
             }
         }
+    }
+
+    if (sort) {
+        results.sort(function (a, b) {
+            return (
+                Number(b.replace(/[^0-9]/g, "")) -
+                Number(a.replace(/[^0-9]/g, ""))
+            )
+        })
     }
 
     for (let i = 0; i < results.length; i++) {
