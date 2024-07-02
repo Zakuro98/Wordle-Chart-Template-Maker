@@ -1,9 +1,40 @@
 let word = "adieu"
 let columns = 4
+let guesses = true
+let sizes = false
+let percents = false
+
+function format_size(num) {
+    if (num < 10) {
+        return num + "&nbsp;&nbsp;&nbsp;&nbsp;"
+    } else if (num < 100) {
+        return num + "&nbsp;&nbsp;&nbsp;"
+    } else if (num < 1000) {
+        return num + "&nbsp;&nbsp;"
+    } else if (num < 10000) {
+        return num + "&nbsp;"
+    } else {
+        return num
+    }
+}
+
+function format_percent(num) {
+    let percent = (num * 100) / 2321
+    if (percent < 10) {
+        return percent.toFixed(2) + "%"
+    } else if (percent < 100) {
+        return percent.toFixed(1) + "%"
+    } else if (percent === 100) {
+        return "100%&nbsp;"
+    }
+}
 
 function initialize_chart() {
     word = document.getElementById("word").value.toLowerCase()
     columns = document.getElementById("columns").value
+    guesses = document.getElementById("guesses").checked
+    sizes = document.getElementById("sizes").checked
+    if (sizes) percents = document.getElementById("percents").checked
 
     if (word.length === 5) {
         if (/^[a-zA-Z]+$/.test(word)) {
@@ -138,28 +169,91 @@ function submit_chart() {
         }
 
         if (list.length === 1) {
-            results.push(
-                tiles[0] +
-                    tiles[1] +
-                    tiles[2] +
-                    tiles[3] +
-                    tiles[4] +
-                    " " +
-                    list[0].toUpperCase()
-            )
+            if (guesses) {
+                results.push(
+                    tiles[0] +
+                        tiles[1] +
+                        tiles[2] +
+                        tiles[3] +
+                        tiles[4] +
+                        " " +
+                        list[0].toUpperCase()
+                )
+            } else if (sizes) {
+                if (percents)
+                    results.push(
+                        tiles[0] +
+                            tiles[1] +
+                            tiles[2] +
+                            tiles[3] +
+                            tiles[4] +
+                            " " +
+                            format_percent(list.length)
+                    )
+                else
+                    results.push(
+                        tiles[0] +
+                            tiles[1] +
+                            tiles[2] +
+                            tiles[3] +
+                            tiles[4] +
+                            " " +
+                            format_size(list.length)
+                    )
+            } else {
+                results.push(
+                    tiles[0] +
+                        tiles[1] +
+                        tiles[2] +
+                        tiles[3] +
+                        tiles[4] +
+                        " &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+                )
+            }
         } else if (list.length > 1) {
-            results.push(
-                tiles[0] +
-                    tiles[1] +
-                    tiles[2] +
-                    tiles[3] +
-                    tiles[4] +
-                    " &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
-            )
+            if (sizes) {
+                if (percents)
+                    results.push(
+                        tiles[0] +
+                            tiles[1] +
+                            tiles[2] +
+                            tiles[3] +
+                            tiles[4] +
+                            " " +
+                            format_percent(list.length)
+                    )
+                else
+                    results.push(
+                        tiles[0] +
+                            tiles[1] +
+                            tiles[2] +
+                            tiles[3] +
+                            tiles[4] +
+                            " " +
+                            format_size(list.length)
+                    )
+            } else {
+                results.push(
+                    tiles[0] +
+                        tiles[1] +
+                        tiles[2] +
+                        tiles[3] +
+                        tiles[4] +
+                        " &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+                )
+            }
         }
     }
     for (const w of dictionary) {
-        if (w === word) results.push("🟩🟩🟩🟩🟩 (N/A)")
+        if (w === word) {
+            if (sizes) {
+                if (percents) results.push("🟩🟩🟩🟩🟩 " + format_percent(1))
+                else results.push("🟩🟩🟩🟩🟩 1&nbsp;&nbsp;&nbsp;&nbsp;")
+            } else {
+                if (guesses) results.push("🟩🟩🟩🟩🟩 (N/A)")
+                else results.push("🟩🟩🟩🟩🟩 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;")
+            }
+        }
     }
 
     for (let i = 0; i < results.length; i++) {
@@ -169,11 +263,21 @@ function submit_chart() {
         else output += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
     }
 
-    output += "<br><br>WordleBot is required to use this chart."
-    output +=
-        "<br>To use this chart, you should record second guesses WordleBot would've chosen for each scenario in this chart. You can then use them if you see that scenario again!"
-    output +=
-        "<br>Scenarios that have only one possible answer have the answer written in for you, as guessing it would be the only 99 skill choice."
+    if (!sizes) {
+        output += "<br><br>WordleBot is required to use this chart."
+        output +=
+            "<br>To use this chart, you should record second guesses WordleBot would've chosen for each scenario in this chart. You can then use them if you see that scenario again!"
+    } else {
+        if (percents)
+            output +=
+                "<br><br>Shown here is the percentage of all valid answers that belong to each group!"
+        else
+            output +=
+                "<br><br>Shown here is the number of valid answers in each group!"
+    }
+    if (guesses)
+        output +=
+            "<br>Scenarios that have only one possible answer have the answer written in for you, as guessing it would be the only 99 skill choice."
     output +=
         "<br><br>NOTE: This chart may not be entirely accurate, as the full Wordle answer list is not publicly available anymore."
 
