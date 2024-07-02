@@ -24,6 +24,7 @@ div {
     margin-bottom: 0.67em;
 }
 
-div.sub{
+#sub {
+    display: none;
     margin-left: 1em;
 }
