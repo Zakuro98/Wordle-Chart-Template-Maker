@@ -25,6 +25,27 @@
                 <input id="columns" type="number" value="4" min="1">
             </div>
 
+            <div>
+                <input id="guesses" type="checkbox" checked>
+                <label for="guesses">
+                    Show guesses for groups of size 1
+                </label>
+            </div>
+
+            <div>
+                <input id="sizes" type="checkbox">
+                <label for="sizes">
+                    Show group sizes
+                </label>
+            </div>
+
+            <div class="sub">
+                <input id="percents" type="checkbox">
+                <label for="percents">
+                    Show sizes in percent
+                </label>
+            </div>
+
             <button id="create" onclick="initialize_chart()">
                 Create Chart
             </button>
